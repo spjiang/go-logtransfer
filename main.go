@@ -23,7 +23,7 @@ func main() {
 	fmt.Println("init conf success.")
 
 	// 1、初始化es
-	err = es.Init(cfg.ESConfig.Address, cfg.ESConfig.ChanSize)
+	err = es.Init(cfg.ESConfig.Address, cfg.ESConfig.ChanSize, cfg.ESConfig.ChanWorker)
 	if err != nil {
 		fmt.Printf("Init es failed, err:%v\n", err)
 		return

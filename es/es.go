@@ -20,7 +20,7 @@ var (
 
 // 初始化ES，准备接收kafka数据
 // Init ...
-func Init(addr string, chanSize int) (err error) {
+func Init(addr string, chanSize, chanWorker int) (err error) {
 	if !strings.HasPrefix(addr, "http://") {
 		addr = "http://" + addr
 	}
@@ -31,7 +31,10 @@ func Init(addr string, chanSize int) (err error) {
 	}
 	fmt.Println("connect to es success")
 	ch = make(chan *LogData, chanSize)
-	go SendToES()
+	// 启动多个goroutine去消费通道数据
+	for i := 0; i < chanWorker; i++ {
+		go SendToES()
+	}
 	return
 }
 

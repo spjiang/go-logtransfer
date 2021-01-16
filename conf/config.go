@@ -11,6 +11,7 @@ type KafkaConfig struct {
 }
 
 type ESConfig struct {
-	Address  string `ini:"address"`
-	ChanSize int    `ini:"chanSize"`
+	Address    string `ini:"address"`
+	ChanSize   int    `ini:"chanSize"`
+	ChanWorker int    `ini:"chanWorker"`
 }
