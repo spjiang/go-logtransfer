@@ -2,7 +2,7 @@ package conf
 
 type LogTransfer struct {
 	KafkaConfig `ini:"kafka"`
-	ESConfig    `ini:"etcd"`
+	ESConfig    `ini:"es"`
 }
 
 type KafkaConfig struct {
@@ -11,5 +11,6 @@ type KafkaConfig struct {
 }
 
 type ESConfig struct {
-	Address string `ini:"address"`
+	Address  string `ini:"address"`
+	ChanSize int    `ini:"chanSize"`
 }

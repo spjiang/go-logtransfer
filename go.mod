@@ -11,7 +11,10 @@ require (
 	github.com/eapache/queue v1.1.0 // indirect
 	github.com/frankban/quicktest v1.11.3 // indirect
 	github.com/golang/snappy v0.0.2 // indirect
+	github.com/mailru/easyjson v0.7.6 // indirect
+	github.com/olivere/elastic v6.2.35+incompatible
 	github.com/pierrec/lz4 v2.6.0+incompatible // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	gopkg.in/ini.v1 v1.62.0

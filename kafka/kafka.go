@@ -3,12 +3,12 @@ package kafka
 import (
 	"fmt"
 	"github.com/Shopify/sarama"
+	"logtransfer/es"
 )
 
 // kafka日志模块
-type logData struct {
-	topic string
-	data  string
+type LogData struct {
+	Data string
 }
 
 var (
@@ -21,12 +21,12 @@ func Init(addrs []string, topic string) (err error) {
 	consumer, err = sarama.NewConsumer(addrs, nil)
 	if err != nil {
 		fmt.Printf("fail to start consumer failed,err:%v\n", err)
-		return
+		return err
 	}
 	partitionList, err := consumer.Partitions(topic)
 	if err != nil {
 		fmt.Printf("fail to get list of Partitions failed,err:%v\n", err)
-		return
+		return err
 	}
 	fmt.Printf("get Partitions :%v\n", partitionList)
 
@@ -36,16 +36,19 @@ func Init(addrs []string, topic string) (err error) {
 		pc, err := consumer.ConsumePartition(topic, int32(partition), sarama.OffsetNewest)
 		if err != nil {
 			fmt.Printf("fail to start consumer for partition %d,err:%v\n", partition, err)
-			return
+			return err
 		}
-		defer pc.AsyncClose()
 		go func(pc sarama.PartitionConsumer) {
 			for msg := range pc.Messages() {
-				fmt.Printf("partition:%d, offset:%d, key:%v,Value:%v", msg.Partition, msg.Offset, msg.Key, msg.Value)
+				fmt.Printf("topic: %v, partition:%d, offset:%d, key:%v,Value:%v\n", topic, msg.Partition, msg.Offset, msg.Key, string(msg.Value))
 				// 直接发送给ES
+				ld := &es.LogData{
+					Topic: topic,
+					Data:  string(msg.Value),
+				}
+				es.SendToESChan(ld)
 			}
 		}(pc)
 	}
-
-	return
+	return err
 }
